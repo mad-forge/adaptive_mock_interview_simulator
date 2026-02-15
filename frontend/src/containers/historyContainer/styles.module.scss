@@ -1,0 +1,310 @@
+.page {
+    min-height: 100vh;
+    background: #f8f8fc;
+    font-family: $notoSans4;
+    color: $dark;
+}
+
+/* Navbar */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid $stroke-100;
+}
+
+.navInner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-family: $notoSans8;
+    font-size: 20px;
+    color: $dark;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logoIcon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: $primary;
+    color: white;
+    font-family: $notoSans8;
+    font-size: 12px;
+    border-radius: 8px;
+}
+
+.navRight {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.avatarGroup {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 8px;
+    padding-left: 16px;
+    border-left: 1px solid $stroke-100;
+}
+
+.avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, $primary, $primary-600);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: $notoSans7;
+    font-size: 14px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.avatarName {
+    font-family: $notoSans6;
+    font-size: 13px;
+    color: $dark;
+}
+
+.navLink {
+    all: unset;
+    cursor: pointer;
+    font-family: $notoSans5;
+    font-size: 14px;
+    color: $gray-700;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.15s ease;
+
+    &:hover {
+        color: $primary;
+        background: $primary-50;
+    }
+}
+
+/* Content */
+.content {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+}
+
+.header {
+    margin-bottom: 28px;
+
+    h1 {
+        font-family: $notoSans8;
+        font-size: 28px;
+        letter-spacing: -0.5px;
+        margin-bottom: 4px;
+    }
+
+    p {
+        font-size: 14px;
+        color: $hint;
+    }
+}
+
+.backBtn {
+    all: unset;
+    cursor: pointer;
+    font-family: $notoSans5;
+    font-size: 14px;
+    color: $primary;
+    margin-bottom: 16px;
+    display: inline-block;
+    transition: opacity 0.15s ease;
+
+    &:hover {
+        opacity: 0.7;
+    }
+}
+
+.empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 32px;
+    background: white;
+    border: 1px solid $stroke-100;
+    border-radius: 16px;
+    gap: 20px;
+
+    p {
+        font-size: 15px;
+        color: $hint;
+    }
+}
+
+.ctaPrimary {
+    all: unset;
+    box-sizing: border-box;
+    cursor: pointer;
+    padding: 12px 32px;
+    background: $primary;
+    color: white;
+    font-family: $notoSans6;
+    font-size: 14px;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: $primary-700;
+    }
+}
+
+/* List */
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    background: white;
+    border: 1px solid $stroke-100;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        border-color: $primary-200;
+        box-shadow: 0 4px 20px rgba($primary, 0.08);
+        transform: translateY(-1px);
+    }
+}
+
+.cardLeft {
+    flex: 1;
+}
+
+.cardTitle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+
+    h4 {
+        font-family: $notoSans6;
+        font-size: 16px;
+        color: $dark;
+    }
+}
+
+.diffBadge {
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-family: $notoSans6;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.diffEasy {
+    background: $success-50;
+    color: $success-700;
+}
+
+.diffMedium {
+    background: $warning-50;
+    color: $warning-700;
+}
+
+.diffHard {
+    background: $danger-50;
+    color: $danger-700;
+}
+
+.cardMeta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.metaChip {
+    font-family: $notoSans5;
+    font-size: 12px;
+    color: $gray-600;
+    padding: 2px 8px;
+    background: $gray-50;
+    border-radius: 6px;
+    text-transform: capitalize;
+}
+
+.metaDate {
+    font-size: 12px;
+    color: $hint;
+}
+
+.cardRight {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+}
+
+.cardScore {
+    font-family: $notoSans8;
+    font-size: 28px;
+}
+
+.scorePoor { color: $danger; }
+.scoreOk { color: $warning-600; }
+.scoreGreat { color: $success-600; }
+
+.cardStatus {
+    font-family: $notoSans5;
+    font-size: 13px;
+    color: $hint;
+    padding: 4px 12px;
+    border: 1px solid $stroke-200;
+    border-radius: 8px;
+}
+
+.cardArrow {
+    font-size: 18px;
+    color: $gray-400;
+    transition: transform 0.15s ease;
+
+    .card:hover & {
+        transform: translateX(3px);
+        color: $primary;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .content {
+        padding: 24px 16px 64px;
+    }
+
+    .card {
+        padding: 16px 18px;
+    }
+
+    .cardScore {
+        font-size: 24px;
+    }
+}

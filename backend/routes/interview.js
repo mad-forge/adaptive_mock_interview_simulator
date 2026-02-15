@@ -5,26 +5,42 @@ import { decideNext, shouldEndSession } from '../services/adaptive.js';
 
 const router = Router();
 
+const VALID_DIFFICULTIES = ['easy', 'medium', 'hard'];
+const VALID_TYPES = ['technical', 'behavioral', 'system_design'];
+const VALID_DURATIONS = [15, 30, 45, 60];
+
 // POST /api/sessions — create session + generate first question
 router.post('/', async (req, res) => {
   try {
     const { role, difficulty, type, duration_min } = req.body;
 
-    if (!role || !difficulty || !type || !duration_min) {
-      return res.status(400).json({ error: 'Missing required fields: role, difficulty, type, duration_min' });
+    // Strict input validation
+    if (!role || typeof role !== 'string' || role.trim().length < 2) {
+      return res.status(400).json({ error: 'Invalid role' });
     }
+    if (!VALID_DIFFICULTIES.includes(difficulty)) {
+      return res.status(400).json({ error: 'Invalid difficulty. Must be: easy, medium, or hard' });
+    }
+    if (!VALID_TYPES.includes(type)) {
+      return res.status(400).json({ error: 'Invalid type. Must be: technical, behavioral, or system_design' });
+    }
+    if (!VALID_DURATIONS.includes(Number(duration_min))) {
+      return res.status(400).json({ error: 'Invalid duration. Must be: 15, 30, 45, or 60' });
+    }
+
+    const sanitizedRole = role.trim().slice(0, 100);
 
     // Create session
     const { rows } = await pool.query(
       `INSERT INTO sessions (role, difficulty, type, duration_min)
        VALUES ($1, $2, $3, $4) RETURNING *`,
-      [role, difficulty, type, duration_min]
+      [sanitizedRole, difficulty, type, Number(duration_min)]
     );
     const session = rows[0];
 
     // Generate first question
     const questionText = await generateQuestion({
-      role,
+      role: sanitizedRole,
       type,
       difficulty,
       previousQuestions: [],
@@ -38,8 +54,7 @@ router.post('/', async (req, res) => {
       [session.id, questionText, difficulty]
     );
 
-    // Estimate total questions: ~2 min per question
-    const totalQuestions = Math.max(3, Math.floor(duration_min / 2));
+    const totalQuestions = Math.max(3, Math.floor(Number(duration_min) / 2));
 
     res.status(201).json({
       session_id: session.id,
@@ -56,7 +71,7 @@ router.post('/', async (req, res) => {
     });
   } catch (err) {
     console.error('POST /sessions error:', err);
-    res.status(500).json({ error: err.message || 'Failed to create session' });
+    res.status(500).json({ error: 'Failed to create session. Please try again.' });
   }
 });
 
@@ -66,9 +81,12 @@ router.post('/:id/answer', async (req, res) => {
     const { id } = req.params;
     const { answer_text } = req.body;
 
-    if (!answer_text) {
-      return res.status(400).json({ error: 'answer_text is required' });
+    if (!answer_text || typeof answer_text !== 'string') {
+      return res.status(400).json({ error: 'answer_text is required and must be a string' });
     }
+
+    // Cap answer length to prevent abuse
+    const sanitizedAnswer = answer_text.trim().slice(0, 5000);
 
     // Fetch session
     const sessionResult = await pool.query('SELECT * FROM sessions WHERE id = $1', [id]);
@@ -100,7 +118,7 @@ router.post('/:id/answer', async (req, res) => {
       type: session.type,
       difficulty: currentQuestion.difficulty,
       questionText: currentQuestion.question_text,
-      answerText: answer_text,
+      answerText: sanitizedAnswer,
     });
 
     // Save answer + evaluation
@@ -108,13 +126,13 @@ router.post('/:id/answer', async (req, res) => {
       `UPDATE questions
        SET answer_text = $1, score = $2, feedback = $3, quality = $4
        WHERE id = $5`,
-      [answer_text, evaluation.score, evaluation.feedback, evaluation.quality, currentQuestion.id]
+      [sanitizedAnswer, evaluation.score, evaluation.feedback, evaluation.quality, currentQuestion.id]
     );
 
     // Update in-memory list for adaptive logic
     const answeredQuestions = [
       ...questions.filter(q => q.answer_text),
-      { ...currentQuestion, answer_text, score: evaluation.score, quality: evaluation.quality },
+      { ...currentQuestion, answer_text: sanitizedAnswer, score: evaluation.score, quality: evaluation.quality },
     ];
 
     // Check if session time is up
@@ -179,7 +197,7 @@ router.post('/:id/answer', async (req, res) => {
     });
   } catch (err) {
     console.error('POST /sessions/:id/answer error:', err);
-    res.status(500).json({ error: err.message || 'Failed to process answer' });
+    res.status(500).json({ error: 'Failed to process answer. Please try again.' });
   }
 });
 
@@ -205,7 +223,20 @@ router.post('/:id/end', async (req, res) => {
     );
 
     if (questionsResult.rows.length === 0) {
-      return res.status(400).json({ error: 'No answered questions to generate report from' });
+      // No answers at all — generate a failure report
+      await pool.query(
+        `UPDATE sessions SET status = 'completed', report = $1, completed_at = NOW() WHERE id = $2`,
+        [JSON.stringify({
+          overall_score: 0,
+          strengths: ['Showed up for the interview'],
+          improvements: ['Answer at least one question', 'Practice basic concepts', 'Prepare before starting'],
+          sample_answers: [],
+          practice_topics: ['Start with fundamentals', 'Review common interview questions', 'Practice explaining concepts out loud'],
+        }), id]
+      );
+
+      const updatedSession = await pool.query('SELECT report FROM sessions WHERE id = $1', [id]);
+      return res.json({ report: updatedSession.rows[0].report });
     }
 
     const report = await generateReport({
@@ -223,7 +254,7 @@ router.post('/:id/end', async (req, res) => {
     res.json({ report });
   } catch (err) {
     console.error('POST /sessions/:id/end error:', err);
-    res.status(500).json({ error: err.message || 'Failed to end session' });
+    res.status(500).json({ error: 'Failed to end session. Please try again.' });
   }
 });
 

@@ -128,6 +128,7 @@ const interviewSlice = createSlice({
                     duration_min: session.duration_min,
                 };
                 state.createdAt = session.created_at;
+                state.totalQuestions = Math.max(3, Math.floor(session.duration_min / 2));
                 state.questions = questions;
                 state.report = session.report;
                 state.status = session.status === "completed" ? "completed" : "active";

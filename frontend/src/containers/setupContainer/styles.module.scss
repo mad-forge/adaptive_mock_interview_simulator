@@ -1,0 +1,345 @@
+.page {
+    min-height: 100vh;
+    background: $gray-50;
+    font-family: $notoSans4;
+    color: $dark;
+}
+
+/* Navbar */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid $stroke-100;
+}
+
+.navInner {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 14px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-family: $notoSans8;
+    font-size: 20px;
+    color: $dark;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logoIcon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: $primary;
+    color: white;
+    font-family: $notoSans8;
+    font-size: 12px;
+    border-radius: 8px;
+}
+
+.navRight {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.navLink {
+    all: unset;
+    cursor: pointer;
+    font-family: $notoSans5;
+    font-size: 14px;
+    color: $gray-700;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.15s ease;
+
+    &:hover {
+        color: $primary;
+        background: $primary-50;
+    }
+}
+
+.profileGroup {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, $primary, $primary-600);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: $notoSans7;
+    font-size: 15px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.profileInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.profileName {
+    font-family: $notoSans6;
+    font-size: 13px;
+    color: $dark;
+    line-height: 1.2;
+}
+
+.logoutBtn {
+    all: unset;
+    cursor: pointer;
+    font-family: $notoSans4;
+    font-size: 11px;
+    color: $hint;
+    transition: color 0.15s ease;
+    line-height: 1.2;
+
+    &:hover {
+        color: $danger;
+    }
+}
+
+/* Content */
+.content {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+}
+
+.header {
+    margin-bottom: 32px;
+
+    h1 {
+        font-family: $notoSans8;
+        font-size: 32px;
+        letter-spacing: -0.5px;
+        margin-bottom: 8px;
+    }
+
+    p {
+        font-size: 15px;
+        color: $hint;
+        line-height: 1.5;
+    }
+}
+
+.formCard {
+    background: white;
+    border: 1px solid $stroke-100;
+    border-radius: 16px;
+    padding: 36px;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
+}
+
+.formSection {
+    margin-bottom: 32px;
+
+    &:last-of-type {
+        margin-bottom: 36px;
+    }
+}
+
+.formLabel {
+    display: block;
+    font-family: $notoSans6;
+    font-size: 14px;
+    color: $dark;
+    margin-bottom: 12px;
+}
+
+/* Role chips */
+.roleGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.roleChip {
+    all: unset;
+    box-sizing: border-box;
+    cursor: pointer;
+    padding: 10px 20px;
+    border: 1px solid $stroke-200;
+    border-radius: 10px;
+    font-family: $notoSans5;
+    font-size: 14px;
+    color: $gray-700;
+    background: white;
+    transition: all 0.15s ease;
+
+    &:hover {
+        border-color: $primary-300;
+        color: $primary;
+        background: $primary-50;
+    }
+
+    &.active {
+        border-color: $primary;
+        color: $primary;
+        background: $primary-50;
+        box-shadow: 0 0 0 1px $primary;
+    }
+}
+
+/* Option cards (type, difficulty) */
+.optionGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.optionCard {
+    all: unset;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 16px;
+    border: 1px solid $stroke-200;
+    border-radius: 12px;
+    background: white;
+    text-align: center;
+    transition: all 0.15s ease;
+
+    &:hover {
+        border-color: $primary-300;
+        background: $primary-50;
+    }
+
+    &.active {
+        border-color: $primary;
+        background: $primary-50;
+        box-shadow: 0 0 0 1px $primary;
+    }
+}
+
+.optionTitle {
+    font-family: $notoSans6;
+    font-size: 15px;
+    color: $dark;
+}
+
+.optionDesc {
+    font-size: 12px;
+    color: $hint;
+}
+
+/* Duration */
+.durationGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.durationChip {
+    all: unset;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 14px 12px;
+    border: 1px solid $stroke-200;
+    border-radius: 12px;
+    background: white;
+    text-align: center;
+    transition: all 0.15s ease;
+
+    strong {
+        font-family: $notoSans7;
+        font-size: 16px;
+        color: $dark;
+    }
+
+    span {
+        font-size: 11px;
+        color: $hint;
+    }
+
+    &:hover {
+        border-color: $primary-300;
+        background: $primary-50;
+    }
+
+    &.active {
+        border-color: $primary;
+        background: $primary-50;
+        box-shadow: 0 0 0 1px $primary;
+
+        strong {
+            color: $primary;
+        }
+    }
+}
+
+/* Start Button */
+.startBtn {
+    all: unset;
+    box-sizing: border-box;
+    cursor: pointer;
+    width: 100%;
+    padding: 16px;
+    background: $primary;
+    color: white;
+    border-radius: 12px;
+    font-family: $notoSans6;
+    font-size: 16px;
+    text-align: center;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: $primary-700;
+        box-shadow: 0 4px 20px rgba($primary, 0.3);
+        transform: translateY(-1px);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: default;
+        box-shadow: none;
+        transform: none;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .content {
+        padding: 32px 16px 64px;
+    }
+
+    .formCard {
+        padding: 24px;
+    }
+
+    .optionGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .durationGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .header h1 {
+        font-size: 26px;
+    }
+}

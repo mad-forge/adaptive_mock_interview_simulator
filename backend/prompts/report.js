@@ -8,48 +8,37 @@ export function buildReportPrompt({ role, type, difficulty, questions }) {
     is_followup: q.is_followup,
   }));
 
-  return `You are an expert interviewer generating a performance report for a mock ${type} interview.
+  const avgScore = questions.reduce((sum, q) => sum + (q.score ?? 0), 0) / (questions.length || 1);
 
-Role: ${role}
-Starting difficulty: ${difficulty}
-Total questions: ${questions.length}
+  return `You are a STRICT senior interviewer writing a performance report for a ${role} mock ${type} interview.
 
-Full interview transcript:
+Difficulty: ${difficulty}
+Questions answered: ${questions.length}
+Average per-question score: ${Math.round(avgScore)}/100
+
+Full transcript:
 ${JSON.stringify(transcript, null, 2)}
 
-Generate a comprehensive performance report.
+IMPORTANT — CALIBRATE THE ENTIRE REPORT TO THE DIFFICULTY LEVEL ("${difficulty}"):
+- If difficulty is "easy": use simple, encouraging language. Strengths/improvements should reference basic concepts. Improved sample answers should be clear and beginner-friendly. Practice topics should be foundational.
+- If difficulty is "medium": use balanced professional language. Expect intermediate knowledge. Improved answers should show real-world examples. Practice topics should target mid-level gaps.
+- If difficulty is "hard": use senior-level technical language. Expect deep understanding. Improved answers should demonstrate system thinking, trade-offs, edge cases. Practice topics should target advanced concepts.
 
-Pick the 2 WEAKEST answers (lowest scores) for the "sample_answers" section and provide significantly improved versions.
+REPORT RULES:
+1. overall_score MUST be a realistic weighted average. If most answers scored below 40, the overall CANNOT be above 40. Do NOT inflate.
+2. If a candidate gave gibberish or "I don't know" for most answers, overall_score should be 0-15.
+3. Strengths should be SPECIFIC things the candidate actually demonstrated — not generic praise. If they were bad, be honest (e.g., "At least attempted to answer all questions").
+4. Improvements must be ACTIONABLE and SPECIFIC — cite exactly what they got wrong and what to study. Match the depth of feedback to the difficulty level.
+5. For sample_answers, pick the 2 WEAKEST answers (lowest scores). Write improved answers appropriate for the "${difficulty}" level — don't give a senior-level answer for an easy question.
+6. practice_topics must be specific technical topics they should study at the "${difficulty}" level, not vague categories.
 
-Respond with ONLY valid JSON (no markdown, no code fences):
-{
-  "overall_score": <number 0-100, weighted average considering difficulty>,
-  "strengths": [
-    "<strength 1>",
-    "<strength 2>",
-    "<strength 3>"
-  ],
-  "improvements": [
-    "<area for improvement 1>",
-    "<area for improvement 2>",
-    "<area for improvement 3>"
-  ],
-  "sample_answers": [
-    {
-      "question": "<the original question>",
-      "original_answer": "<what the candidate said>",
-      "improved_answer": "<a strong, detailed model answer>"
-    },
-    {
-      "question": "<the original question>",
-      "original_answer": "<what the candidate said>",
-      "improved_answer": "<a strong, detailed model answer>"
-    }
-  ],
-  "practice_topics": [
-    "<topic 1>",
-    "<topic 2>",
-    "<topic 3>"
-  ]
-}`;
+SCORING GUIDE for overall_score:
+- 0-20: Failed badly, most answers wrong or empty
+- 21-40: Below expectations, major gaps
+- 41-60: Average, knows basics but lacks depth
+- 61-80: Good, solid understanding with minor gaps
+- 81-100: Exceptional, only if almost all answers were excellent
+
+Respond with ONLY valid JSON:
+{"overall_score":<0-100>,"strengths":["<specific strength 1>","<specific strength 2>","<specific strength 3>"],"improvements":["<specific actionable improvement 1>","<specific actionable improvement 2>","<specific actionable improvement 3>"],"sample_answers":[{"question":"<weakest question>","original_answer":"<what they said>","improved_answer":"<detailed model answer 4-6 sentences>"},{"question":"<2nd weakest question>","original_answer":"<what they said>","improved_answer":"<detailed model answer 4-6 sentences>"}],"practice_topics":["<specific topic 1>","<specific topic 2>","<specific topic 3>"]}`;
 }
