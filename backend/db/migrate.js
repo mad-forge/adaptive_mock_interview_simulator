@@ -1,8 +1,11 @@
 import 'dotenv/config';
 import pg from 'pg';
 
+const dbUrl = process.env.DATABASE_URL.replace(/[?&]sslmode=[^&]*/g, '');
+
 const pool = new pg.Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: dbUrl,
+  ssl: { rejectUnauthorized: false },
 });
 
 const schema = `
