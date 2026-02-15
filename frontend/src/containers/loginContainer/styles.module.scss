@@ -1,9 +1,30 @@
 /* Page */
 .page {
+    position: relative;
+    overflow: hidden;
     min-height: 100vh;
-    background: #ffffff;
+    background:
+        radial-gradient(1200px 520px at 12% -12%, rgba($primary, 0.08) 0%, rgba($primary, 0) 70%),
+        radial-gradient(900px 480px at 88% 0%, rgba($primary-200, 0.24) 0%, rgba($primary-200, 0) 74%),
+        #ffffff;
     font-family: $notoSans4;
     color: $dark;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+.page > * {
+    position: relative;
+    z-index: 1;
+}
+
+.page::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba($primary-50, 0.42) 100%);
+    pointer-events: none;
+    z-index: 0;
 }
 
 /* Navbar */
@@ -55,18 +76,21 @@
 
     h1 {
         font-family: $notoSans8;
-        font-size: 48px;
-        line-height: 1.15;
-        letter-spacing: -1.5px;
+        font-size: clamp(38px, 4.6vw, 50px);
+        line-height: 1.1;
+        letter-spacing: -1.2px;
         color: $dark;
         margin-bottom: 20px;
+        max-width: 780px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     p {
         font-size: 17px;
         line-height: 1.7;
         color: $hint;
-        max-width: 500px;
+        max-width: 620px;
         margin: 0 auto 36px;
     }
 }
@@ -95,10 +119,89 @@
     }
 }
 
+/* Metrics */
+.metrics {
+    padding: 12px 32px 48px;
+}
+
+.metricsInner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.metric {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba($primary-100, 0.6);
+    border-radius: 14px;
+    padding: 22px 18px;
+    text-align: center;
+
+    span {
+        display: block;
+        font-family: $notoSans8;
+        font-size: 28px;
+        letter-spacing: -0.6px;
+        color: $dark;
+        margin-bottom: 6px;
+    }
+
+    p {
+        font-size: 13px;
+        color: $hint;
+        line-height: 1.55;
+    }
+}
+
+/* Roles */
+.roles {
+    padding: 22px 32px 56px;
+}
+
+.rolesInner {
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+
+    h2 {
+        font-family: $notoSans7;
+        font-size: 30px;
+        letter-spacing: -0.5px;
+        color: $dark;
+        margin-bottom: 12px;
+    }
+
+    p {
+        font-size: 15px;
+        color: $hint;
+        max-width: 620px;
+        margin: 0 auto 24px;
+    }
+}
+
+.roleChips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+
+    span {
+        padding: 10px 14px;
+        font-family: $notoSans5;
+        font-size: 13px;
+        border-radius: 999px;
+        border: 1px solid rgba($primary-200, 0.9);
+        background: rgba($primary-50, 0.75);
+        color: $dark;
+    }
+}
+
 /* Features */
 .features {
     padding: 80px 32px;
-    background: #f8f8fc;
+    background: linear-gradient(180deg, rgba($primary-50, 0.5) 0%, rgba($primary-50, 0.2) 100%);
 }
 
 .featuresInner {
@@ -136,6 +239,64 @@
     }
 }
 
+/* Value */
+.value {
+    padding: 84px 32px;
+}
+
+.valueInner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 32px;
+    align-items: start;
+}
+
+.valueText {
+    h2 {
+        font-family: $notoSans7;
+        font-size: 32px;
+        color: $dark;
+        line-height: 1.2;
+        letter-spacing: -0.6px;
+        margin-bottom: 12px;
+    }
+
+    p {
+        font-size: 15px;
+        line-height: 1.75;
+        color: $hint;
+        max-width: 420px;
+    }
+}
+
+.valueGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+}
+
+.valueCard {
+    padding: 22px 18px;
+    border-radius: 14px;
+    border: 1px solid rgba($primary-100, 0.9);
+    background: white;
+
+    h4 {
+        font-family: $notoSans6;
+        font-size: 15px;
+        color: $dark;
+        margin-bottom: 6px;
+    }
+
+    p {
+        font-size: 13px;
+        line-height: 1.6;
+        color: $hint;
+    }
+}
+
 /* How It Works */
 .steps {
     padding: 80px 32px;
@@ -164,7 +325,8 @@
     gap: 16px;
     text-align: left;
     padding: 28px 24px;
-    background: #f8f8fc;
+    background: rgba($primary-50, 0.42);
+    border: 1px solid rgba($primary-100, 0.45);
     border-radius: 14px;
 
     h4 {
@@ -195,11 +357,100 @@
     font-size: 16px;
 }
 
+/* Testimonials */
+.testimonials {
+    padding: 80px 32px;
+}
+
+.testimonialsInner {
+    max-width: 1100px;
+    margin: 0 auto;
+
+    h2 {
+        text-align: center;
+        font-family: $notoSans7;
+        font-size: 30px;
+        color: $dark;
+        margin-bottom: 34px;
+        letter-spacing: -0.4px;
+    }
+}
+
+.quoteGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.quoteCard {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba($primary-50, 0.4) 100%);
+    border: 1px solid rgba($primary-100, 0.65);
+    border-radius: 14px;
+    padding: 24px 20px;
+
+    p {
+        font-size: 14px;
+        line-height: 1.75;
+        color: $gray-800;
+        margin-bottom: 14px;
+    }
+
+    span {
+        font-family: $notoSans6;
+        font-size: 13px;
+        color: $primary-700;
+    }
+}
+
+/* FAQ */
+.faq {
+    padding: 18px 32px 84px;
+}
+
+.faqInner {
+    max-width: 860px;
+    margin: 0 auto;
+
+    h2 {
+        text-align: center;
+        font-family: $notoSans7;
+        font-size: 30px;
+        color: $dark;
+        margin-bottom: 28px;
+        letter-spacing: -0.4px;
+    }
+}
+
+.faqList {
+    display: grid;
+    gap: 12px;
+}
+
+.faqItem {
+    padding: 20px 20px;
+    border-radius: 12px;
+    border: 1px solid $stroke-100;
+    background: rgba(255, 255, 255, 0.88);
+
+    h4 {
+        font-family: $notoSans6;
+        font-size: 15px;
+        color: $dark;
+        margin-bottom: 6px;
+    }
+
+    p {
+        font-size: 14px;
+        color: $hint;
+        line-height: 1.65;
+    }
+}
+
 /* Bottom CTA */
 .bottomCta {
     padding: 80px 32px;
     text-align: center;
-    background: #f8f8fc;
+    background: linear-gradient(180deg, rgba($primary-50, 0.18) 0%, rgba($primary-50, 0.54) 100%);
 
     h2 {
         font-family: $notoSans7;
@@ -218,6 +469,8 @@
     align-items: center;
     max-width: 1100px;
     margin: 0 auto;
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(8px);
 }
 
 .footerText {
@@ -383,9 +636,33 @@
         }
     }
 
+    .metricsInner,
     .featuresInner,
-    .stepsRow {
+    .stepsRow,
+    .quoteGrid,
+    .valueGrid {
         grid-template-columns: 1fr;
+    }
+
+    .valueInner {
+        grid-template-columns: 1fr;
+        gap: 22px;
+    }
+
+    .rolesInner h2,
+    .testimonialsInner h2,
+    .faqInner h2 {
+        font-size: 26px;
+    }
+
+    .metrics {
+        padding-top: 4px;
+    }
+
+    .roles,
+    .faq {
+        padding-left: 20px;
+        padding-right: 20px;
     }
 
     .modal {
