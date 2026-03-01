@@ -1,7 +1,3 @@
-Here’s an updated version of your **README** that includes your new Todo List feature and RTK Query integration 👇
-
----
-
 # 🚀 React Boilerplate
 
 A scalable and well-structured React project setup with **Redux Toolkit**, **RTK Query**, **Axios**, and **modular SCSS** — ready for rapid development.
